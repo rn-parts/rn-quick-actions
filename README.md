@@ -5,7 +5,7 @@ iOS [Home screen Quick Actions](https://developer.apple.com/design/human-interfa
 ## Installation
 
 ```bash
-npm install rn-quick-actions
+yarn add rn-quick-actions
 ```
 
 ## Setup
