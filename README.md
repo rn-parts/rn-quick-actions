@@ -1,6 +1,6 @@
 # rn-quick-actions
 
-iOS [Home screen Quick Actions](https://developer.apple.com/design/human-interface-guidelines/ios/system-capabilities/home-screen-actions/) & Android [App Shortcuts](https://developer.android.com/guide/topics/ui/shortcuts/creating-shortcuts) for react-native
+[Quick Actions(iOS)](https://developer.apple.com/design/human-interface-guidelines/ios/system-capabilities/home-screen-actions/) & [App Shortcuts(Android)](https://developer.android.com/guide/topics/ui/shortcuts/creating-shortcuts) for React Native
 
 ## Installation
 
@@ -21,22 +21,20 @@ so, you will therefore need to add the following code in your
 project's [`AppDelegate.m`](./example/ios/ShortcutsExample/AppDelegate.m)) file.
 
 ```objective-c
+// add on top of the file
+#import "RNShortcuts.h"
+// ...
+
 - (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler {
     [RNShortcuts performActionForShortcutItem:shortcutItem completionHandler:completionHandler];
 }
 ```
-
-Do not forget to add `#import "RNShortcuts.h"` on top of your project's [`AppDelegate.m`](./example/ios/ShortcutsExample/AppDelegate.m) file.
 
 ### Android
 
 Android doesn't require any additional setup.
 
 ## Usage
-
-### Example project
-
-See the [Example project](./example/README.md) for a working demo.
 
 ### Documentation
 
@@ -117,7 +115,7 @@ etc.
 const shortcutItems = await Shortcuts.getShortcuts();
 ```
 
-### Demo
+### Example
 
 ```js
 import { useEffect } from 'react';
@@ -194,7 +192,7 @@ to learn about the dimensions and design specifications.
 
 ## Contributing
 
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+If you want to add some features, feel free to submit PR. See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 
