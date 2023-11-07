@@ -1,6 +1,6 @@
 {
   "name": "rn-quick-actions",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "iOS Home screen Quick Actions & Android App Shortcuts for react-native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
