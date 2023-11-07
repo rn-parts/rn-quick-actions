@@ -26,6 +26,8 @@ project's [`AppDelegate.m`](./example/ios/ShortcutsExample/AppDelegate.m)) file.
 }
 ```
 
+Do not forget to add `#import "RNShortcuts.h"` on top of your project's [`AppDelegate.m`](./example/ios/ShortcutsExample/AppDelegate.m) file.
+
 ### Android
 
 Android doesn't require any additional setup.
@@ -41,14 +43,9 @@ See the [Example project](./example/README.md) for a working demo.
 #### Imports
 
 ```js
-// ...
-import { NativeEventEmitter } from "react-native";
-import Shortcuts from "rn-quick-actions";
-
+import Shortcuts from 'rn-quick-actions';
 // if using typescript, can also use the 'ShortcutItem' type
-import Shortcuts, { ShortcutItem } from "rn-quick-actions";
-
-// ...
+import Shortcuts, { ShortcutItem } from 'rn-quick-actions';
 ```
 
 #### Initial shortcut / action
@@ -67,19 +64,17 @@ On iOS the listener is also called for the initial
 invocation, unless it was already received via `Shortcuts.getInitialShortcut()`.
 
 ```js
-const ShortcutsEmitter = new NativeEventEmitter(Shortcuts);
-
-// 1. define the listener
-function handleShortcut(item) {
-    const {type, data} = item;
-    // your handling logic
-};
+// 1. define the handler
+function handler(item) {
+  const { type, data } = item;
+  // your handling logic
+}
 
 // 2. add the listener in a `useEffect` hook or `componentDidMount`
-ShortcutsEmitter.addListener("onShortcutItemPressed", handleShortcut);
+const sub = Shortcuts.onShortcutPressed(handler);
 
 // 3. remove the listener in a `useEffect` hook or `componentWillUnmount`
-ShortcutsEmitter.removeListener("onShortcutItemPressed", handleShortcut);
+sub.remove();
 ```
 
 #### Set shortcuts
@@ -88,14 +83,15 @@ To set shortcuts (will replace existing dynamic actions / shortcuts)
 
 ```js
 const shortcutItem = {
-    id: "my.awesome.action",
-    title: "Do awesome things",
-    shortTitle: "Do it",
-    subtitle: "iOS only",
-    iconName: "ic_awesome",
-    data: {
-        "foo": "bar",
-    },
+  id: 'my.awesome.action',
+  title: 'Do awesome things',
+  shortTitle: 'Do it',
+  subtitle: 'iOS only',
+  iconName: 'ic_awesome',
+  symbolName: 'house.fill', // SF Symbol Name (iOS only)
+  data: {
+    foo: 'bar',
+  },
 };
 
 Shortcuts.setShortcuts([shortcutItem]);
@@ -121,11 +117,57 @@ etc.
 const shortcutItems = await Shortcuts.getShortcuts();
 ```
 
+### Demo
+
+```js
+import { useEffect } from 'react';
+import Shortcuts from 'rn-quick-actions';
+import { Scan, Search } from '@/components';
+
+export default function useShortcuts() {
+  useEffect(() => {
+    const shortcutsItems = [
+      {
+        type: 'scan',
+        title: ' Scan',
+        iconName: 'md_scan',
+        data: {},
+      },
+      {
+        type: 'search',
+        title: 'Search',
+        iconName: 'md_search',
+        data: {},
+      },
+    ];
+
+    Shortcuts.setShortcuts(shortcutsItems.reverse());
+
+    const handler = (item) => {
+      const { type } = item || {};
+      if (type === 'scan') {
+        Scan();
+      }
+      if (type === 'search') {
+        Search();
+      }
+    };
+
+    const sub = Shortcuts.onShortcutPressed(handler);
+    return () => {
+      sub.remove();
+    };
+  }, []);
+}
+```
+
 ## Icons
 
 To display icons with your shortcuts / actions you will need to add them to your
 project. Once added use the name of your iOS asset or Android drawable as the
-value for `iconName` above.
+value for `iconName` above. You can also use SF Symbol Name like `house.fill`
+or `globe.europe.africa` for `symbolName` above (iOS only). If `symbolName` is
+filled, `iconName` is not taken into account.
 
 ### iOS - Asset catalog
 
@@ -134,16 +176,16 @@ Add new assets to your [Asset catalog](https://developer.apple.com/library/archi
 
 Refer
 [Custom Icons : Home Screen Quick Action Icon
-Size](https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/custom-icons/)
+Size](https://developer.apple.com/design/human-interface-guidelines/home-screen-quick-actions)
 to learn about the dimensions and design specifications.
 
 ### Android - drawable
 
 Add [drawable resources](https://developer.android.com/studio/write/resource-manager) to you Android project. In Android studio, choose:
 
-- for vector icons (SVG / PDF): __File > New > Vector Asset__
+- for vector icons (SVG / PDF): **File > New > Vector Asset**
 
-- for scalar icons (PNG): __File > New > Image Asset__
+- for scalar icons (PNG): **File > New > Image Asset**
 
 Refer
 [App Shortcuts: Icon design

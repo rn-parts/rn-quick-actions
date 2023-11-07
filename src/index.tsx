@@ -1,4 +1,8 @@
-import { NativeModules, EmitterSubscription, NativeEventEmitter } from 'react-native';
+import {
+  NativeModules,
+  EmitterSubscription,
+  NativeEventEmitter,
+} from 'react-native';
 
 export interface ShortcutItem {
   /**
@@ -27,6 +31,11 @@ export interface ShortcutItem {
    * The name of the iOS Asset or Android drawable
    */
   iconName?: string;
+
+  /**
+   * The name of the iOS SF Symbol Name
+   */
+  symbolName?: string;
 
   /**
    * [Android] The name of the person
@@ -94,8 +103,10 @@ class Shortcuts {
   /**
    * Listens for new shortcut events
    */
-  onShortcutPressed(listener: (shortcut: ShortcutItem) => void): EmitterSubscription {
-    return ShortcutsEmitter.addListener('onShortcutItemPressed', listener);
+  onShortcutPressed(
+    handler: (shortcut: ShortcutItem) => void
+  ): EmitterSubscription {
+    return ShortcutsEmitter.addListener('onShortcutItemPressed', handler);
   }
 }
 

@@ -89,14 +89,14 @@ fileprivate extension UIApplicationShortcutItem {
 
     static func from(_ value: [String: Any]) throws -> UIApplicationShortcutItem? {
         guard
-            let type = (value["id"] ?? value["type"]) as? String,
+            let type = value["type"] as? String,
             let title = value["title"] as? String
             else {
                 throw ShortcutsError.invalidShortcutItem
         }
 
         let subtitle = value["subtitle"] as? String
-        let icon = UIApplicationShortcutIcon.from(value["iconName"] as? String)
+        let icon = UIApplicationShortcutIcon.from(value)
         let userInfo = value["data"] as? [String: NSSecureCoding]
 
         return UIApplicationShortcutItem(
@@ -110,10 +110,13 @@ fileprivate extension UIApplicationShortcutItem {
 }
 
 fileprivate extension UIApplicationShortcutIcon {
-    static func from(_ imageName: String?) -> UIApplicationShortcutIcon? {
-        guard let imageName = imageName else {
-            return nil
+    static func from(_ value: [String: Any]) -> UIApplicationShortcutIcon? {
+        guard let symbolName = value["symbolName"] as? String else {
+            guard let imageName = value["iconName"] as? String else {
+                return nil
+            }
+            return UIApplicationShortcutIcon(templateImageName: imageName)
         }
-        return UIApplicationShortcutIcon(templateImageName: imageName)
+        return UIApplicationShortcutIcon(systemImageName: symbolName)
     }
 }
