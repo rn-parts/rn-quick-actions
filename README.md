@@ -32,7 +32,20 @@ project's [`AppDelegate.m`](./example/ios/ShortcutsExample/AppDelegate.m)) file.
 
 ### Android
 
-Android doesn't require any additional setup.
+Configure the Kotlin version in project's build.gradle file.
+
+```gradle
+// eg:
+buildscript {
+  ext {
+    buildToolsVersion = "31.0.0"
+    minSdkVersion = 21
+    compileSdkVersion = 32
+    targetSdkVersion = 26
+    kotlinVersion = "1.6.0"
+  }
+}
+```
 
 ## Usage
 
