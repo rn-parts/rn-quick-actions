@@ -190,10 +190,10 @@ Refer
 guidelines](https://commondatastorage.googleapis.com/androiddevelopers/shareables/design/app-shortcuts-design-guidelines.pdf)
 to learn about the dimensions and design specifications.
 
-## Contributing
+## Contribution
 
 If you want to add some features, feel free to submit PR. See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 
-MIT
+[MIT](LICENSE).
